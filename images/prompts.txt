@@ -1,0 +1,6 @@
+Prompts>
+
+https://designer.microsoft.com/image-creator
+Traditional art style image with, in the background, a bamboo forest with the Matterhorn mountain, an orange moon with a small B letter on it. In the foreground, a laptop showing the words "ML Engineer Olivier" on its screen. A friendly Python snake is curled next to the laptop, and a Rolex submariner wristwatch on the other side of the laptop.
+
+Traditional art style image with the Mount Fuji, a bamboo forest, and an orange moon with a crater shaped as a capital B, in the background. In the foreground, a laptop displaying the name Olivier and the Matterhorn mountain. A Python snake resting next to a book titled ML Python, and Rolex wristwatch on the side.
