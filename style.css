@@ -432,3 +432,84 @@ ul {
 		float: left;
 		padding-left: 40px;
 	}
+	
+.st_viewport{
+  max-height: 500px;
+  overflow: auto;
+}
+
+[data-table_id="1"]{
+  background-color: rgb(255,115,0);
+}
+[data-table_id="2"]{
+  background-color: rgb(61,53,39);
+  color: rgb(220,220,220);
+}
+[data-table_id="3"]{
+  background-color: rgba(168,189,4, .8);
+}
+
+._rank{
+  min-width: 80px;
+}
+._id{
+  min-width: 60px;
+}
+._name{
+  min-width: 130px;
+}
+._surname{
+  min-width: 130px;
+}
+._year{
+  min-width: 80px;
+}
+._section{
+  min-width: 130px;
+}
+
+pre{
+  overflow: auto;
+}
+
+/* _print.scss:123 */
+.table-dark {
+  color: inherit;
+
+  th,
+  td,
+  thead th,
+  tbody + tbody {
+    border-color: $table-border-color;
+  }
+}
+
+/* _tables.scss:132 */
+.table-dark {
+  color: $table-dark-color;
+  background-color: $table-dark-bg;
+
+  th,
+  td,
+  thead th {
+    border-color: $table-dark-border-color;
+  }
+
+  &.table-bordered {
+    border: 0;
+  }
+
+  &.table-striped {
+    tbody tr:nth-of-type(odd) {
+      background-color: $table-dark-accent-bg;
+    }
+  }
+
+  &.table-hover {
+    tbody tr {
+      @include hover {
+        background-color: $table-dark-hover-bg;
+      }
+    }
+  }
+}
