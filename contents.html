@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Concatenate HTML Pages</title>
+  <title>CV Rumley</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="screen" href="main.css" />
+  <link rel="stylesheet" media="print" href="print.css" /><!-- screen for testing -->
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
   <div id="container"></div>
-
   <script>
     async function loadAndConcatenatePages() {
       const pages = [
@@ -40,6 +45,11 @@
 
     // Run the function to load and concatenate pages
     loadAndConcatenatePages();
+	
+    // Automatically open the print dialog once the page is loaded
+    window.onload = function() {
+      window.print();
+    };
   </script>
 </body>
 </html>
