@@ -15,6 +15,10 @@ h1 {
   break-before: always;
 }
 
+h1:first-of-type {
+  page-break-before: avoid;
+}
+
 img, svg {
   display: none !important;
 }
