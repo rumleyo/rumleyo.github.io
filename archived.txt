@@ -1,0 +1,39 @@
+
+		<button onclick="checkPassword()">Contact Details</button>
+        <div class="contact_details_content" id="protectedContent">
+          <h2>Contact details</h2>
+          <p class="purple">Phone:</p>
+          <p>+41 78 712 55 23</p>
+          <p class="purple">Email:</p>
+          <p>olivier@rumley.tokyo</p>
+          <p class="purple">Adress:</p>
+          <p>Soret, 14</p>
+          <p>Geneva, Switzerland</p>
+          <p>1203</p>
+        </div>
+<script>
+    function checkPassword() {
+      // Prompt user for password
+      const password = prompt("Enter the password:");
+
+      // Check if password is correct (you can change the password as needed)
+      if (password === "42ctb") {
+        // Show the protected content
+        document.getElementById('protectedContent').style.display = 'block';
+      } else {
+        // Alert if password is incorrect
+        alert("Incorrect password. Try again.");
+      }
+    }
+ </script>
+  
+  
+		
+		<div class="get_social_content">
+          <h2>Get social</h2>
+          <ul class="social_icons horizontal_list">
+            <li><a class="x" href="https://x.com/wa2sabi"><span class="entypo-x-circled"></span><span class="invisible">X</span></a></li>
+            <li><a class="linkedin" href="https://www.linkedin.com/in/olivierrumley/"><span class="entypo-linkedin-circled"></span><span class="invisible">LinkedIn</span></a></li>
+          </ul>
+        </div>
+		
