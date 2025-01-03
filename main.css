@@ -109,7 +109,10 @@ h1,h2,h3, h4 {
 		font-size: 48px;
 		font-weight: 300;
 		margin: 20px 0;
+		display: flex;              /* Use flexbox to align items inline */
+        align-items: center;        /* Vertically center the image and title */
 	}
+
 	h2 {
 		font-size: 28px;
 		margin: 32px 0 24px;
@@ -120,8 +123,14 @@ h1,h2,h3, h4 {
 	h4 {
 		font-size: 18px;
 		font-weight: 400;
+		display: flex;              /* Use flexbox to align items inline */
+        align-items: center;        /* Vertically center the image and title */
 	}
-
+    h4 img {
+      width: 50px;                /* Set the width of the image */
+      /* height: 30px;               /* Set the height of the image */
+      margin-right: 10px;         /* Add some space between the image and the title */
+    }
 blockquote {
 	font-style: italic;
 	margin: 25px 0;
@@ -129,7 +138,7 @@ blockquote {
 	border-left: 2px solid #48DA9B;
 }
 	
-blockquote, p , a, li {
+blockquote, p , a, li, i {
 	font-family: 'Lato', Helvetica, sans-serif;
 	font-weight: 300;
 	font-size: 15px;

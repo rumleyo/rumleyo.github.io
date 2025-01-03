@@ -7,7 +7,7 @@ header, footer, aside, nav, form, iframe, .menu, .hero, .adslot {
   display: none;
 }
 
-.no_print,.header_menu_container,.send_message_button,.profile_quote{
+.no_print,.header_menu_container,.send_message_button,.profile_quote,.image-middle,.image-text{
   display: none;
 }
 
