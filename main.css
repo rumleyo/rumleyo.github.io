@@ -96,6 +96,10 @@ body {
 	margin: 0;
 }
 
+.print{
+  display: none;
+}
+
 h1,h2,h3, h4 {
 	font-family: 'Lato', Helvetica, sans-serif;
 	font-weight: 300;
