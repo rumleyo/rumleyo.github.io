@@ -31,3 +31,7 @@ img.print, svg.print {
 a::after {
   content: " (" attr(href) ")";
 }
+
+table, th, td {
+  border: 1px solid;
+}
