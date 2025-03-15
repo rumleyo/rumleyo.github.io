@@ -1,0 +1,37 @@
+/* print.css */
+* {
+  background-image: none !important;
+}
+
+header, footer, aside, nav, form, iframe, .menu, .hero, .adslot {
+  display: none;
+}
+
+.no_print,.header_menu_container,.send_message_button,.profile_quote,.image-middle,.image-text{
+  display: none;
+}
+
+h1 {
+  break-before: always;
+}
+
+h1:first-of-type {
+  page-break-before: avoid;
+}
+
+img, svg {
+  display: none !important;
+}
+
+img.print, svg.print {
+  display: block;
+  max-width: 100%;
+}
+
+a::after {
+  content: " (" attr(href) ")";
+}
+
+table, th, td, .styled-table {
+  border: 1px solid;
+}

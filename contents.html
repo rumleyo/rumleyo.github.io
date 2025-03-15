@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV Rumley</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="screen" href="print.css" />
+  <link rel="stylesheet" media="print" href="print.css" />
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<div id="header">
+		<!-- LOGOTYPE/NAME -->
+        <div class="header_logotype_container">
+          <h1 class="logotype_name">CV Olivier Rumley</h1>
+          <h2 class="logotype_occupation">Project Engineer & Data Scientist </h2>
+        </div>
+	</div>
+	<div id="container"></div>
+	<script>
+		async function loadAndConcatenatePages() {
+		  const pages = [
+			'content1.html',
+			'content2.html',
+			'content3.html',
+			'content4.html'
+		  ];
+
+		  const container = document.getElementById('container');
+		  let concatenatedHTML = '';
+
+		  for (const page of pages) {
+			try {
+			  const response = await fetch(page);
+			  if (response.ok) {
+				const htmlContent = await response.text();
+				concatenatedHTML += htmlContent;
+			  } else {
+				console.error(`Failed to load ${page}`);
+			  }
+			} catch (error) {
+			  console.error('Error fetching page:', error);
+			}
+		  }
+
+		  // Insert concatenated HTML into the container
+		  container.innerHTML = concatenatedHTML;
+		}
+
+		// Run the function to load and concatenate pages
+		loadAndConcatenatePages();
+		
+		// Automatically open the print dialog once the page is loaded
+		//window.onload = function() {window.print();};
+	</script>
+</body>
+</html>
