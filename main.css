@@ -1,15 +1,19 @@
-@import url(https://weloveiconfonts.com/api/?family=entypo|fontawesome);
-/* entypo */
-[class*="entypo-"]:before {
-  font-family: 'entypo', sans-serif;
+
+#loader {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #111;
+  color: #9d4edd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  z-index: 9999;
+  transition: opacity 0.3s;
 }
-/* fontawesome */
-[class*="fontawesome-"]:before {
-  font-family: 'FontAwesome', sans-serif;
-}
+#loader.hidden { opacity: 0; pointer-events: none; }
 
 /* Utils */
-
 .clear {
 	clear: both;
 }

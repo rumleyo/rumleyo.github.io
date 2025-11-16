@@ -1,0 +1,6 @@
+Lancer un serveur local
+cd chemin/vers/cv-rumley
+python -m http.server 8000
+http://localhost:8000
+http://localhost:8000/?lang=ja
+http://localhost:8000/?lang=en

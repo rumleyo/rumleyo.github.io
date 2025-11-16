@@ -1,0 +1,54 @@
+<!-- CONTENT -->			
+<div class="block">
+  <h2>Specifics about my current employment</h2>
+</div>
+<div class="block">
+  <p>Based at a large scale wristwatch manufacturing located in Geneva Switzerland, the site produces all components and sub-assemblies except for the movement and dials of high-end mechanical watches.
+  My main responsibility lies in the conversion of the geometrical product specifications designed by the engineering department into manufacturing & control specifications, in conformity with the original tolerances at all manufacturing phases of the WIP and end product.
+  The scope regards all new projects and includes calculation for existing products being adapted to new manufacturing processes.
+  The tools used to ensure geometrical conformity ranges from single phase 2D trigonometry calculation to 3D multiple phases simulations.
+  </p>
+<div class="block">
+  <h2>Examples of Realised Projects</h2>
+</div>
+<table class="styled-table">
+<thead><tr><th>Category</th><th>Title</th><th>Description</th></tr></thead>
+  <tbody>
+	<tr><td>Workload Management System</td><td>Employee Workload Planner and Activity Tracker</td>
+		<td>Designed and developed from scratch a standalone suite of tools in VBA for logging, tracking, reporting, and planning work activities. 
+		Currently being used daily by a team of 12 persons. 
+		Working principle: the main user interface is the Ms Outlook calendar where the user enters regular meetings and events which are then tagged with labels using a VBA macro that embeds the information in the custom properties of the events.
+		Another VBA macro is used to input and manage workloads which have due dates and an amount of hours estimated on previously completed tasks of similar nature. 
+		The user can one-click synchronize the workloads and calendar, at which point, the program extracts existing events from calendar, 
+		distribute in a prioritized fashion the workloads and insert workload events into the calendar with the daily amount of expected work hours. It warns of any due date slippage.
+		Upon completing a daily workload, the user can one-click the planned event into a realised work which the program will use to calculate the remaining hours to completion of the total hours.
+		The manager has a dashboard to track all activities and plannings. For new project workloads, the program can point to the employees by availability order that can take on the workloads in a timely fashion.
+		The program has roughly 30k lines of code and structured with classes for ease of development, and nested modal user forms for ease of use.
+		The workload data is stored in a custom database in Ms Access format.
+		</td></tr>
+    <tr><td>Product Data Analysis</td><td>Use Case Impact</td>
+		<td>Developed from scratch a tool in VBA Excel with library for manipulating native array objects (for efficiency purpose) 
+		    that takes in the entire data of product items and associated CAD objects as inputs, and produce a complete map of related product items as output for thorough versioning deployment.</td></tr>
+	<tr><td>Product Data Governance</td><td>Product Items Association</td>
+		<td>Foreword : The Concept Product Items and Manufacturing Product Items are two distinct data sets, managed by two different internal services in a PLM environment. 
+		However there is a necessary dependency where a manufacturing product item must follow requirements set by a related concept product item.
+		That association is critical for proper propagation of requirement updates and quality traceability. It is labor intensive, error prone, and object to a governance process.
+		<br>Objective : the projects aims at automating the process of pairing both sets of items by analysing item features such as the designations, material, Bill of Material.
+		<br>Strategy : apply multi-pronged approaches relying both on rule-based algorithms and machine learning to establish the most reliable results
+		<br>Rule-based include coherence between material, characteristics given by tokenized item designations, and underlying associations between CAD objects and product items.
+		<br>Machine-learning basically uses Missing Forest to predict the equivalent item features in the other item space, and then look for closest matches using Nearest Neighbour
+		<br>Challenges : many to many associations depending on the stage of product development and product status.
+		</td></tr>
+	<tr><td>Advanced Form</td><td>Manufacturing Compliant Criteria Check(Cahier Metiers)</td>
+	<td>Objective : In order to flag, as early as possible in the development phase of a product, the potential risks against known manufacturing constraints, 
+	the geometrical specifications of a new product is checked against a list of complex criteria early in the industrial phase. Multiple users must be able to edit simultaneously the checklist, which must be filtered and have visual details of each criteria.
+	<br>Strategy : implemented a VBA coded user form in Excel linked to a database in Access for project data (user editable) and csv files and images for criteria description (admin editable). 
+	Each project specific component characteristics are set initially by the Engineering department. These characteristics are then used to filter the relevant criteria each time a subsequent user open the project file.
+	Each criteria is compared against historical data, evaluated, and reviewed for design changes if required. 
+	</td></tr>
+	<tr><td>Geometrical Calculation Toolset</td><td>To be filled</td><td></td></tr>
+	<tr><td>TDPC</td><td>To be filled (Tableau de Pilotage et Calcul des Plans de Fabrication)</td><td></td></tr>
+	<tr><td>Matrice PDF</td><td>To be filled</td><td></td></tr>
+  </tbody>
+</table>
+</div>

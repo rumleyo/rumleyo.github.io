@@ -3,125 +3,241 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CV Rumley</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic' rel='stylesheet' type='text/css'>
+  <title data-i18n="title">CV Rumley</title>
+
+  <!-- Préconnexion -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oWvALqw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- CSS -->
   <link rel="stylesheet" media="screen" href="main.css" />
-  <link rel="stylesheet" media="print" href="print.css" /><!-- screen for testing -->
-    <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" media="print" href="print.css" />
+
+  <style>
+    /* Conteneur principal à 2 colonnes */
+    #content_area {
+      display: flex;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    #left_col {
+      flex: 0 0 30%;
+      max-width: 300px;
+    }
+    #content_container {
+      flex: 1;
+      min-height: 400px;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      border-left: 4px solid #9d4edd;
+    }
+    .language-selector { margin: 15px 0; text-align: right; }
+    #language-select {
+      padding: 8px 12px; border: 1px solid #6a0dad; border-radius: 4px;
+      background: #1a1a1a; color: #fff; font-family: 'Lato', sans-serif;
+    }
+    .header_menu a.active { color: #9d4edd !important; font-weight: bold; }
+  </style>
 </head>
 <body>
-<header class="main-header" id="main-header"></header>
-<!-- MAIN CONTAINER -->
+
 <div id="main_container">
-    <!-- HEADER -->
-    <div id="header">
-        <!-- LOGOTYPE/NAME -->
-        <div class="header_logotype_container">
-          <h1 class="logotype_name">Olivier <span class="purple">Rumley</span></h1>
-          <h2 class="logotype_occupation">Project Engineer & Data Scientist </h2>
-        </div>
-        <!-- MAIN MENU -->
-        <div class="header_menu_container">
-          <ul class="download_print_buttons horizontal_list">
-            <li><a href="#" onclick="redirectToCompleteContent()"><span class="icon entypo-download"></span>Download CV</a></li>
-            <!--<li><a href="#" onclick="window.print();return false;"><span class="icon entypo-print"></span>Print CV</a></li>-->
-          </ul>
-          <div class="clear"></div>
-          <ul class="header_menu horizontal_list">
-            <li><a class="no_border purple" href="#" data-content="content1.html">Profile</a></li>
-            <li><a class="no_border purple" href="#" data-content="content2.html">Education</a></li>
-            <li><a class="no_border purple" href="#" data-content="content3.html">Skills</a></li>
-            <li><a class="no_border purple" href="#" data-content="content4.html">Work Experience</a></li>
-			<li><a class="no_border purple" href="#" data-content="content5.html">.</a></li><!--Current Work Specifics-->
-          </ul>
-        </div>
+	<div id="loader">
+	  <p><i class="fas fa-spinner fa-spin"></i> Loading...</p>
+	</div>
+  <!-- HEADER -->
+  <div id="header">
+    <div class="header_logotype_container">
+      <h1 class="logotype_name" data-i18n-html="header_name">Olivier <span class='purple'>Rumley</span></h1>
+      <h2 class="logotype_occupation" data-i18n="header_job"></h2>
     </div>
-    <!-- LEFT COL -->
+
+    <div class="header_menu_container">
+      <ul class="download_print_buttons horizontal_list">
+        <li><a href="#" onclick="redirectToCompleteContent()">
+          <i class="fas fa-download" ></i> <span data-i18n="download_cv">Download CV</span>
+        </a></li>
+      </ul>
+      <div class="clear"></div>
+
+      <div class="language-selector">
+        <select id="language-select">
+          <option value="en" data-i18n="lang_en">English</option>
+          <option value="ja" data-i18n="lang_ja">日本語</option>
+        </select>
+      </div>
+
+      <ul class="header_menu horizontal_list">
+        <li><a class="no_border purple" href="#" data-content="content1.html" data-i18n="menu_profile"></a></li>
+        <li><a class="no_border purple" href="#" data-content="content2.html" data-i18n="menu_education"></a></li>
+        <li><a class="no_border purple" href="#" data-content="content3.html" data-i18n="menu_skills"></a></li>
+        <li><a class="no_border purple" href="#" data-content="content4.html" data-i18n="menu_experience"></a></li>
+        <li><a class="no_border purple" href="#" data-content="content5.html" data-i18n="menu_current"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- === DEUX COLONNES === -->
+  <div id="content_area">
+    
+    <!-- COLONNE GAUCHE -->
     <div id="left_col">
-        <div class="profile_frame">
-          <div class="profile_picture"></div>
-          <!-- <img src="images/olivier_rumley.jpg" alt="profile picture"> -->
-        </div>
-        <div class="hello_content">
-          <h2 class="no_print">Hello!</h2>
-		  <p class="print"><u>Introduction</u></p>
-          <p>I am deeply passionate about technology and economics, a hardworking and quick learner with professional experience in both Japan and Switzerland.</p>
-		  <p>My goal is to transition into a new professional role in the fields of Data Science and Engineering</p>
-			<p><div title="I am am eligible for a spouse visa and available for new opportunities within a couple of months’ notice." style="color: #48DA9B;">ビザについて</div></p>
-		</div>
-		<p class="print"><u>Email:</u> olivier@rumley.tokyo</p>
-        <a class="send_message_button" href="mailto:olivier@rumley.tokyo">
-          <span class="cut1"></span>
-          <span class="cut2"></span>
-          <span class="content">Send me a message <span class="fontawesome-double-angle-right"></span></span>
-        </a>
-		<BR>
-		<p class="print"><u>LinkedIn:</u> https://www.linkedin.com/in/olivierrumley/"</p>
-		<a class="send_message_button" href="https://www.linkedin.com/in/olivierrumley/">
-		  <span class="cut1"></span>
-          <span class="cut2"></span>
-          <span class="content">LinkedIn<span class="fontawesome-double-angle-right"></span></span>
-        </a>
+      <div class="profile_frame">
+        <div class="profile_picture"></div>
+      </div>
+
+      <div class="hello_content">
+		<h2 class="no_print" data-i18n="hello"></h2>
+		<p class="print"><u data-i18n="intro_title"></u></p>
+		<p data-i18n="intro_1"></p>
+		<p data-i18n="intro_2"></p>
+		<p data-i18n="intro_3"></p>
+      </div>
+
+      <p class="print"><u data-i18n="email_label">Email:</u> <span data-i18n="email">olivier@rumley.tokyo</span></p>
+      <a class="send_message_button" href="mailto:olivier@rumley.tokyo">
+        <span class="cut1"></span><span class="cut2"></span>
+        <span class="content" data-i18n="send_message">Send me a message <i class="fas fa-angle-right"></i></span>
+      </a>
+      <br>
+      <p class="print"><u data-i18n="linkedin_label">LinkedIn:</u> <span data-i18n="linkedin_url">https://www.linkedin.com/in/olivierrumley/</span></p>
+      <a class="send_message_button" href="#" data-i18n-href="linkedin_url">
+        <span class="cut1"></span><span class="cut2"></span>
+        <span class="content" data-i18n="linkedin_text">LinkedIn <i class="fas fa-angle-right"></i></span>
+      </a>
     </div>
-    <!-- CONTENT -->
-    <div id="content_container">				
-		<!-- The content will be loaded here dynamically -->
+
+    <!-- COLONNE DROITE -->
+    <div id="content_container">
+      <!-- Contenu chargé dynamiquement -->
     </div>
-    <div class="clear"></div>
-    <!-- FOOTER -->
-    <div id="footer">
-        <p class="footer_name">Olivier Rumley CV 2025</p>
-    </div>
+  </div>
+
+  <div class="horizontal_line">
+    <div class="line_left"></div>
+    <div class="left_circle"></div>
+    <div class="central_circle"></div>
+    <div class="right_circle"></div>
+    <div class="line_right"></div>
+  </div>
+
+  <div id="footer">
+    <p class="footer_name" data-i18n="footer">Olivier Rumley CV 2025</p>
+  </div>
 </div>
+
 <script>
-   // Get all the <a> elements in the menu
-   const links = document.querySelectorAll('.header_menu a');
-   
-   // Get the content container
+   const urlParams = new URLSearchParams(window.location.search);
+   const urlLang = urlParams.get('lang');
+   let currentLang = (urlLang && ['en', 'ja'].includes(urlLang)) ? urlLang : (localStorage.getItem('language') || 'en');
+
    const contentContainer = document.getElementById('content_container');
+   const langSelect = document.getElementById('language-select');
+   const loader = document.getElementById('loader');
+   let translations = {};
 
-   // Redirect to the print page
-   function redirectToCompleteContent() {
-      window.location.href = 'contents.html';
-   }
-	
-   // Function to load content from an external file
-   function loadContent(url) {
-      fetch(url)
-         .then(response => {
-            if (!response.ok) {
-               throw new Error(`Failed to load ${url}`);
-            }
-            return response.text();
-         })
-         .then(content => {
-            // Update the content container with the loaded content
-            contentContainer.innerHTML = content;
-         })
-         .catch(error => {
-            contentContainer.innerHTML = "<p>Sorry, there was an error loading the content.</p>";
-            console.error(error);
+   // CHARGER JSON AVEC FORCE RELOAD
+   async function loadTranslations(lang) {
+      try {
+         const res = await fetch(`lang/${lang}.json`, {
+            cache: 'no-store'  // ← FORCE LE RECHARGEMENT
          });
+         if (!res.ok) throw new Error(`HTTP ${res.status}`);
+         translations = await res.json();
+         return true;
+      } catch (e) {
+         console.error("Erreur chargement JSON:", e);
+         return false;
+      }
    }
 
-   // Add event listeners to each link
-   links.forEach(link => {
-      link.addEventListener('click', function(event) {
-         event.preventDefault(); // Prevent default anchor click behavior
+   // APPLIQUER TRADUCTIONS (forcé)
+   function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+         const key = el.getAttribute('data-i18n');
+         if (translations[key] !== undefined) el.innerHTML = translations[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+         const key = el.getAttribute('data-i18n-html');
+         if (translations[key] !== undefined) el.innerHTML = translations[key];
+      });
+      document.querySelectorAll('[data-i18n-href]').forEach(el => {
+         const key = el.getAttribute('data-i18n-href');
+         if (translations[key] !== undefined) el.href = translations[key];
+      });
+      if (translations.title) document.title = translations.title;
+      langSelect.value = currentLang;
+      document.documentElement.lang = currentLang;
+      localStorage.setItem('language', currentLang);
+   }
 
-         // Get the content file URL from the data-content attribute
-         const contentFile = link.getAttribute('data-content');
+   function loadContent(file) {
+      const langPath = currentLang === 'en' ? 'en/' : 'ja/';
+      fetch(langPath + file, { cache: 'no-store' })
+         .then(r => r.ok ? r.text() : Promise.reject())
+         .then(html => contentContainer.innerHTML = html)
+         .catch(() => contentContainer.innerHTML = "<p style='color:red;'>Erreur contenu.</p>");
+   }
 
-         // Load the content from the specified file
-         loadContent(contentFile);
+   function redirectToCompleteContent() {
+      window.location.href = `contents${currentLang === 'ja' ? '-ja' : ''}.html`;
+   }
+
+   // CHANGEMENT VIA SÉLECTEUR
+   langSelect.addEventListener('change', async function() {
+      currentLang = this.value;
+      loader.style.display = 'flex';
+      loader.classList.remove('hidden');
+
+      const success = await loadTranslations(currentLang);
+      if (success) {
+         applyTranslations();
+         const active = document.querySelector('.header_menu a.active');
+         loadContent(active?.getAttribute('data-content') || 'content1.html');
+      }
+
+      setTimeout(() => {
+         loader.classList.add('hidden');
+         setTimeout(() => loader.style.display = 'none', 300);
+      }, 100);
+   });
+
+   // MENU
+   document.querySelectorAll('.header_menu a').forEach(link => {
+      link.addEventListener('click', e => {
+         e.preventDefault();
+         document.querySelectorAll('.header_menu a').forEach(a => a.classList.remove('active'));
+         link.classList.add('active');
+         loadContent(link.getAttribute('data-content'));
       });
    });
 
-   // Optionally, load the initial content when the page loads
-   window.onload = function() {
-      loadContent("content1.html"); // Default content
-   };
+   // INIT (au chargement de la page)
+   window.addEventListener('load', async () => {
+      langSelect.value = currentLang;
+
+      loader.style.display = 'flex';
+      const success = await loadTranslations(currentLang);
+      if (success) {
+         applyTranslations();
+         const first = document.querySelector('.header_menu a');
+         first.classList.add('active');
+         loadContent('content1.html');
+      }
+
+      setTimeout(() => {
+         loader.classList.add('hidden');
+         setTimeout(() => loader.style.display = 'none', 300);
+      }, 100);
+   });
 </script>
+
 </body>
 </html>

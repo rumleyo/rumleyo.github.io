@@ -1,0 +1,111 @@
+
+<script>
+   const urlParams = new URLSearchParams(window.location.search);
+   const urlLang = urlParams.get('lang');
+   let currentLang = (urlLang && ['en', 'ja'].includes(urlLang)) ? urlLang : (localStorage.getItem('language') || 'en');
+
+   const contentContainer = document.getElementById('content_container');
+   const langSelect = document.getElementById('language-select');
+   const loader = document.getElementById('loader');
+   let translations = {};
+
+   // Charger JSON
+   async function loadTranslations(lang) {
+      try {
+         const res = await fetch(`lang/${lang}.json`);
+         if (!res.ok) throw new Error();
+         translations = await res.json();
+
+         // Appliquer TOUTES les traductions
+         applyTranslations();
+
+         // Mettre à jour UI
+         document.documentElement.lang = lang;
+         langSelect.value = lang;
+         localStorage.setItem('language', lang);
+
+         // Cacher loader
+         loader.classList.add('hidden');
+         setTimeout(() => loader.style.display = 'none', 300);
+
+      } catch (e) {
+         console.error("Erreur JSON", e);
+         contentContainer.innerHTML = "<p style='color:red;'>Erreur de langue.</p>";
+         loader.classList.add('hidden');
+      }
+   }
+
+   function applyTranslations() {
+      // Texte normal
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+         const key = el.getAttribute('data-i18n');
+         if (translations[key] !== undefined) {
+            el.innerHTML = translations[key];
+         }
+      });
+
+      // HTML (ex: <span class="purple">)
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+         const key = el.getAttribute('data-i18n-html');
+         if (translations[key] !== undefined) {
+            el.innerHTML = translations[key];
+         }
+      });
+
+      // Attribut href
+      document.querySelectorAll('[data-i18n-href]').forEach(el => {
+         const key = el.getAttribute('data-i18n-href');
+         if (translations[key] !== undefined) {
+            el.href = translations[key];
+         }
+      });
+
+      // Titre de page
+      if (translations.title) document.title = translations.title;
+   }
+
+   // Charger contenu dynamique
+   function loadContent(file) {
+      const langPath = currentLang === 'en' ? 'en/' : 'ja/';
+      fetch(langPath + file)
+         .then(r => r.ok ? r.text() : Promise.reject())
+         .then(html => contentContainer.innerHTML = html)
+         .catch(() => contentContainer.innerHTML = "<p style='color:red;'>Erreur contenu.</p>");
+   }
+
+   function redirectToCompleteContent() {
+      window.location.href = `contents${currentLang === 'ja' ? '-ja' : ''}.html`;
+   }
+
+   // Sélecteur
+   langSelect.addEventListener('change', function() {
+      currentLang = this.value;
+      localStorage.setItem('language', currentLang);
+      loader.style.display = 'flex';
+      loader.classList.remove('hidden');
+      loadTranslations(currentLang).then(() => {
+         const active = document.querySelector('.header_menu a.active');
+         loadContent(active?.getAttribute('data-content') || 'content1.html');
+      });
+   });
+
+   // Menu
+   document.querySelectorAll('.header_menu a').forEach(link => {
+      link.addEventListener('click', e => {
+         e.preventDefault();
+         document.querySelectorAll('.header_menu a').forEach(a => a.classList.remove('active'));
+         link.classList.add('active');
+         loadContent(link.getAttribute('data-content'));
+      });
+   });
+
+   // INIT
+   window.addEventListener('load', () => {
+      langSelect.value = currentLang;
+      loadTranslations(currentLang).then(() => {
+         const first = document.querySelector('.header_menu a');
+         first.classList.add('active');
+         loadContent('content1.html');
+      });
+   });
+</script>
