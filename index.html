@@ -134,13 +134,13 @@
 </div>
 
 <script>
-  // 1. Détermine la langue dès le début (avant tout affichage)
+  // 1. Détermine la langue immédiatement
   const urlParams = new URLSearchParams(location.search);
   const urlLang = urlParams.get('lang');
   const savedLang = localStorage.getItem('language');
-  const currentLang = (urlLang && ['en', 'ja'].includes(urlLang)) ? urlLang : (savedLang || 'en');
+  let currentLang = (urlLang && ['en', 'ja'].includes(urlLang)) ? urlLang : (savedLang || 'en');
+  window.currentLang = currentLang; // ← globale
 
-  // 2. Applique immédiatement la langue sur <html> (important pour CSS et accessibilité)
   document.documentElement.lang = currentLang;
 
   const contentContainer = document.getElementById('content_container');
@@ -148,70 +148,67 @@
   const loader = document.getElementById('loader');
   let translations = {};
 
-  // Charge les traductions
   async function loadTranslations(lang) {
     const res = await fetch(`lang/${lang}.json`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(res.status);
+    if (!res.ok) throw new Error(`Impossible de charger lang/${lang}.json (${res.status})`);
     translations = await res.json();
   }
 
-  // Applique toutes les traductions + titre + liens
   function applyTranslations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
+      const key = el.dataset.i18n;
       if (translations[key] !== undefined) el.textContent = translations[key];
     });
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
-      const key = el.getAttribute('data-i18n-html');
+      const key = el.dataset.i18nHtml;
       if (translations[key] !== undefined) el.innerHTML = translations[key];
     });
     document.querySelectorAll('[data-i18n-href]').forEach(el => {
-      const key = el.getAttribute('data-i18n-href');
+      const key = el.dataset.i18nHref;
       if (translations[key] !== undefined) el.href = translations[key];
     });
     if (translations.title) document.title = translations.title;
-
-    // Synchro du select
     langSelect.value = currentLang;
   }
 
-  // Charge le contenu (en ou ja selon langue)
   async function loadContent(file) {
-    const path = currentLang === 'ja' ? 'ja/' : 'en/';
-    const html = await fetch(path + file, { cache: 'no-store' }).then(r => r.text());
-    contentContainer.innerHTML = html;
+    const folder = window.currentLang === 'ja' ? 'ja/' : 'en/';
+    try {
+      const res = await fetch(folder + file, { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      contentContainer.innerHTML = await res.text();
+    } catch (e) {
+      contentContainer.innerHTML = `<p style="color:#ff6b6b;">Impossible de charger ${folder}${file}</p>`;
+    }
   }
 
   function redirectToCompleteContent() {
-    location.href = `contents${currentLang === 'ja' ? '-ja' : ''}.html`;
+    location.href = `contents${window.currentLang === 'ja' ? '-ja' : ''}.html`;
   }
 
-  // Change de langue
+  // Changement de langue
   langSelect.addEventListener('change', async () => {
     const newLang = langSelect.value;
-    if (newLang === currentLang) return;
+    if (newLang === window.currentLang) return;
 
     loader.style.display = 'flex';
     localStorage.setItem('language', newLang);
+    window.currentLang = newLang;
+    document.documentElement.lang = newLang;
 
-    try {
-      Object.assign(window, { currentLang: newLang }); // met à jour la variable globale
-      document.documentElement.lang = newLang;
-      await loadTranslations(newLang);
-      applyTranslations();
+    await loadTranslations(newLang);
+    applyTranslations();
 
-      // recharge le contenu actif
-      const activeLink = document.querySelector('.header_menu a.active');
-      await loadContent(activeLink?.dataset.content || 'content1.html');
-    } catch (e) {
-      console.error(e);
-    } finally {
+    const active = document.querySelector('.header_menu a.active') || document.querySelector('.header_menu a');
+    await loadContent(active.dataset.content || 'content1.html');
+
+    setTimeout(() => {
       loader.style.opacity = '0';
-      setTimeout(() => { loader.style.display = 'none'; loader.style.opacity = ''; }, 300);
-    }
+      setTimeout(() => { loader.style.display = 'none'; loader.style.opacity = '1'; }, 300);
+    }, 100);
   });
 
-  // === INITIALISATION IMMÉDIATE (dès que le DOM est prêt) ===
+  // INITIALISATION
   (async () => {
     loader.style.display = 'flex';
 
@@ -219,28 +216,28 @@
       await loadTranslations(currentLang);
       applyTranslations();
 
-      // Active le premier onglet
       const firstMenu = document.querySelector('.header_menu a');
       firstMenu.classList.add('active');
       await loadContent('content1.html');
 
-      // Menu
       document.querySelectorAll('.header_menu a').forEach(link => {
         link.addEventListener('click', async e => {
           e.preventDefault();
           document.querySelectorAll('.header_menu a').forEach(a => a.classList.remove('active'));
           link.classList.add('active');
-          contentContainer.innerHTML = '<p style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i></p>';
+          contentContainer.innerHTML = '<p style="padding:40px;text-align:center;"><i class="fas fa-spinner fa-spin"></i></p>';
           await loadContent(link.dataset.content);
         });
       });
 
     } catch (e) {
       console.error(e);
-      contentContainer.innerHTML = '<p style="color:red;">Erreur de chargement des traductions.</p>';
+      contentContainer.innerHTML = `<div style="color:#ff6b6b;padding:40px;"><h3>Erreur fatale</h3><p>${e.message}</p></div>`;
     } finally {
-      loader.style.opacity = '0';
-      setTimeout(() => { loader.style.display = 'none'; loader.style.opacity = ''; }, 300);
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => { loader.style.display = 'none'; loader.style.opacity = '1'; }, 300);
+      }, 200);
     }
   })();
 </script>
