@@ -134,109 +134,115 @@
 </div>
 
 <script>
-   const urlParams = new URLSearchParams(window.location.search);
-   const urlLang = urlParams.get('lang');
-   let currentLang = (urlLang && ['en', 'ja'].includes(urlLang)) ? urlLang : (localStorage.getItem('language') || 'en');
+  // 1. Détermine la langue dès le début (avant tout affichage)
+  const urlParams = new URLSearchParams(location.search);
+  const urlLang = urlParams.get('lang');
+  const savedLang = localStorage.getItem('language');
+  const currentLang = (urlLang && ['en', 'ja'].includes(urlLang)) ? urlLang : (savedLang || 'en');
 
-   const contentContainer = document.getElementById('content_container');
-   const langSelect = document.getElementById('language-select');
-   const loader = document.getElementById('loader');
-   let translations = {};
+  // 2. Applique immédiatement la langue sur <html> (important pour CSS et accessibilité)
+  document.documentElement.lang = currentLang;
 
-   // CHARGER JSON AVEC FORCE RELOAD
-   async function loadTranslations(lang) {
-      try {
-         const res = await fetch(`lang/${lang}.json`, {
-            cache: 'no-store'  // ← FORCE LE RECHARGEMENT
-         });
-         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-         translations = await res.json();
-         return true;
-      } catch (e) {
-         console.error("Erreur chargement JSON:", e);
-         return false;
-      }
-   }
+  const contentContainer = document.getElementById('content_container');
+  const langSelect = document.getElementById('language-select');
+  const loader = document.getElementById('loader');
+  let translations = {};
 
-   // APPLIQUER TRADUCTIONS (forcé)
-   function applyTranslations() {
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-         const key = el.getAttribute('data-i18n');
-         if (translations[key] !== undefined) el.innerHTML = translations[key];
+  // Charge les traductions
+  async function loadTranslations(lang) {
+    const res = await fetch(`lang/${lang}.json`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    translations = await res.json();
+  }
+
+  // Applique toutes les traductions + titre + liens
+  function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[key] !== undefined) el.textContent = translations[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if (translations[key] !== undefined) el.innerHTML = translations[key];
+    });
+    document.querySelectorAll('[data-i18n-href]').forEach(el => {
+      const key = el.getAttribute('data-i18n-href');
+      if (translations[key] !== undefined) el.href = translations[key];
+    });
+    if (translations.title) document.title = translations.title;
+
+    // Synchro du select
+    langSelect.value = currentLang;
+  }
+
+  // Charge le contenu (en ou ja selon langue)
+  async function loadContent(file) {
+    const path = currentLang === 'ja' ? 'ja/' : 'en/';
+    const html = await fetch(path + file, { cache: 'no-store' }).then(r => r.text());
+    contentContainer.innerHTML = html;
+  }
+
+  function redirectToCompleteContent() {
+    location.href = `contents${currentLang === 'ja' ? '-ja' : ''}.html`;
+  }
+
+  // Change de langue
+  langSelect.addEventListener('change', async () => {
+    const newLang = langSelect.value;
+    if (newLang === currentLang) return;
+
+    loader.style.display = 'flex';
+    localStorage.setItem('language', newLang);
+
+    try {
+      Object.assign(window, { currentLang: newLang }); // met à jour la variable globale
+      document.documentElement.lang = newLang;
+      await loadTranslations(newLang);
+      applyTranslations();
+
+      // recharge le contenu actif
+      const activeLink = document.querySelector('.header_menu a.active');
+      await loadContent(activeLink?.dataset.content || 'content1.html');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loader.style.opacity = '0';
+      setTimeout(() => { loader.style.display = 'none'; loader.style.opacity = ''; }, 300);
+    }
+  });
+
+  // === INITIALISATION IMMÉDIATE (dès que le DOM est prêt) ===
+  (async () => {
+    loader.style.display = 'flex';
+
+    try {
+      await loadTranslations(currentLang);
+      applyTranslations();
+
+      // Active le premier onglet
+      const firstMenu = document.querySelector('.header_menu a');
+      firstMenu.classList.add('active');
+      await loadContent('content1.html');
+
+      // Menu
+      document.querySelectorAll('.header_menu a').forEach(link => {
+        link.addEventListener('click', async e => {
+          e.preventDefault();
+          document.querySelectorAll('.header_menu a').forEach(a => a.classList.remove('active'));
+          link.classList.add('active');
+          contentContainer.innerHTML = '<p style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i></p>';
+          await loadContent(link.dataset.content);
+        });
       });
-      document.querySelectorAll('[data-i18n-html]').forEach(el => {
-         const key = el.getAttribute('data-i18n-html');
-         if (translations[key] !== undefined) el.innerHTML = translations[key];
-      });
-      document.querySelectorAll('[data-i18n-href]').forEach(el => {
-         const key = el.getAttribute('data-i18n-href');
-         if (translations[key] !== undefined) el.href = translations[key];
-      });
-      if (translations.title) document.title = translations.title;
-      langSelect.value = currentLang;
-      document.documentElement.lang = currentLang;
-      localStorage.setItem('language', currentLang);
-   }
 
-   function loadContent(file) {
-      const langPath = currentLang === 'en' ? 'en/' : 'ja/';
-      fetch(langPath + file, { cache: 'no-store' })
-         .then(r => r.ok ? r.text() : Promise.reject())
-         .then(html => contentContainer.innerHTML = html)
-         .catch(() => contentContainer.innerHTML = "<p style='color:red;'>Erreur contenu.</p>");
-   }
-
-   function redirectToCompleteContent() {
-      window.location.href = `contents${currentLang === 'ja' ? '-ja' : ''}.html`;
-   }
-
-   // CHANGEMENT VIA SÉLECTEUR
-   langSelect.addEventListener('change', async function() {
-      currentLang = this.value;
-      loader.style.display = 'flex';
-      loader.classList.remove('hidden');
-
-      const success = await loadTranslations(currentLang);
-      if (success) {
-         applyTranslations();
-         const active = document.querySelector('.header_menu a.active');
-         loadContent(active?.getAttribute('data-content') || 'content1.html');
-      }
-
-      setTimeout(() => {
-         loader.classList.add('hidden');
-         setTimeout(() => loader.style.display = 'none', 300);
-      }, 100);
-   });
-
-   // MENU
-   document.querySelectorAll('.header_menu a').forEach(link => {
-      link.addEventListener('click', e => {
-         e.preventDefault();
-         document.querySelectorAll('.header_menu a').forEach(a => a.classList.remove('active'));
-         link.classList.add('active');
-         loadContent(link.getAttribute('data-content'));
-      });
-   });
-
-   // INIT (au chargement de la page)
-   window.addEventListener('load', async () => {
-      langSelect.value = currentLang;
-
-      loader.style.display = 'flex';
-      const success = await loadTranslations(currentLang);
-      if (success) {
-         applyTranslations();
-         const first = document.querySelector('.header_menu a');
-         first.classList.add('active');
-         loadContent('content1.html');
-      }
-
-      setTimeout(() => {
-         loader.classList.add('hidden');
-         setTimeout(() => loader.style.display = 'none', 300);
-      }, 100);
-   });
+    } catch (e) {
+      console.error(e);
+      contentContainer.innerHTML = '<p style="color:red;">Erreur de chargement des traductions.</p>';
+    } finally {
+      loader.style.opacity = '0';
+      setTimeout(() => { loader.style.display = 'none'; loader.style.opacity = ''; }, 300);
+    }
+  })();
 </script>
 
 </body>
